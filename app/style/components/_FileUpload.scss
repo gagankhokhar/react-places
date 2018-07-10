@@ -1,0 +1,122 @@
+.image {
+    width: 150px;
+    border-radius: 10px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    vertical-align: middle;
+    transition: width 0.4s, opacity 0.25s ease-in-out;
+    cursor: pointer;
+  }
+  
+  .image:hover {
+    width: 200px;
+    opacity: 0.8;
+  }
+
+  .imageZoom {
+    width: 100%;
+  }
+
+  .closeButton {
+    position: absolute;
+    width: 50px;
+    transform: rotate(45deg);
+    opacity: 0.3;
+    cursor: pointer;
+    transition: transform 0.2s linear;
+  }
+
+  .closeButton:hover {
+    transform: rotate(135deg);
+  }
+
+  .removeButton {
+    position: absolute;
+    margin-top: 60px;
+    margin-left: -2px;
+    width: 50px;
+    opacity: 0.45;
+    cursor: pointer;
+    transition: transform 0.2s linear;
+  }
+
+  .removeButton:hover {
+    transform: rotate(30deg);
+    filter: sepia(100%) saturate(10000%) hue-rotate(0deg);
+  }
+
+
+  .uploadImage {
+    display: inline-block;
+}
+
+.uploadImage > input {
+    display: none;
+}
+
+.addImage {
+    width: 150px;
+    opacity: 0.2;
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: opacity 0.25s ease-in-out;
+}
+
+.addImage:hover {
+    opacity: 0.15;
+}
+
+.progressBar {
+    width: 150px;
+    height: 10px;
+    display: block;
+}
+
+
+.loginContainer {
+    display: inline-block;
+}
+
+.loggedIn {
+    padding-top: 15px;
+    padding-bottom: 75px;
+}
+
+.notLoggedIn {
+    padding-bottom: 75px;
+}
+
+.loggedIn button {
+    margin-left: 5px;
+    padding: 0px 15px;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.loggedIn button:hover {
+    opacity: 0.8;
+}
+
+.notLoggedIn button {
+    border-radius: 0 5px 5px 0;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.notLoggedIn button:hover {
+    opacity: 0.8;
+}
+  
+.urlPhoto {
+    width: 40px;
+    vertical-align: bottom;
+    padding-right: 5px;
+}
+
+em {
+    text-align: left;
+    display: inline-block;
+    color: #D8000C;
+    font-size: smaller;
+    width: 100%;
+}
