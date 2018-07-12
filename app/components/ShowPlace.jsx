@@ -8,7 +8,8 @@ import * as API from 'API'
 import * as actions from 'actions'
 import CommentBox from '../reviews/CommentBox'
 import placeholder from '../img/placeholder.png'
-
+import {Link} from 'react-router'
+import AllImages from 'AllImages'
 
 class ShowPlace extends Component {
   constructor (props) {
@@ -17,9 +18,13 @@ class ShowPlace extends Component {
       name: '',
       location: '',
       images: '',
+      featuredimages: '',
       zipcode: '',
       description: '',
       parentnotes: '',
+      features: '',
+      faq: '',
+      pricing: '',
       id: 0,
       placeEmail: '',
       website: '',
@@ -58,7 +63,28 @@ class ShowPlace extends Component {
       indoor_play: '',
       indoor_play_description: '',
       water_play: '',
-      water_play_description: ''
+      water_play_description: '',
+      week_day_1: '',
+      week_day_1_opening: '',
+      week_day_1_closing: '',
+      week_day_2: '',
+      week_day_2_opening: '',
+      week_day_2_closing: '',
+      week_day_3: '',
+      week_day_3_opening: '',
+      week_day_3_closing: '',
+      week_day_4: '',
+      week_day_4_opening: '',
+      week_day_4_closing: '',
+      week_day_5: '',
+      week_day_5_opening: '',
+      week_day_5_closing: '',
+      week_day_6: '',
+      week_day_6_opening: '',
+      week_day_6_closing: '',
+      week_day_7: '',
+      week_day_7_opening: '',
+      week_day_7_closing: ''
     };
   }
 
@@ -80,13 +106,24 @@ class ShowPlace extends Component {
     });
     
     promise.then((res) => {
+        let imagesAll = res.images;
+        let showAllmagesLink = false;
+        if(imagesAll && imagesAll.length  >3) {
+            imagesAll = imagesAll.splice(0,3);
+            showAllmagesLink = true;
+        }
     this.setState({
       name: res.name,
-      images: res.images,
+      images: imagesAll,
+      // images: res.images,
+      featuredimages: res.featuredimages,
       location: res.location,
       zipcode: res.zipcode,
       description: res.description,
       parentnotes: res.parentnotes,
+      features: res.features,
+      faw: res.faw,
+      pricing: res.pricing,
       id: res.id,
       placeEmail: res.placeEmail,
       phone: res.phone,
@@ -128,6 +165,27 @@ class ShowPlace extends Component {
       indoor_play_description: res.indoor_play_description,
       water_play: res.water_play,
       water_play_description: res.water_play_description,
+      week_day_1: res.week_day_1,
+      week_day_1_opening: res.week_day_1_opening,
+      week_day_1_closing: res.week_day_1_closing,
+      week_day_2: res.week_day_2,
+      week_day_2_opening: res.week_day_2_opening,
+      week_day_2_closing: res.week_day_2_closing,
+      week_day_3: res.week_day_3,
+      week_day_3_opening: res.week_day_3_opening,
+      week_day_3_closing: res.week_day_3_closing,
+      week_day_4: res.week_day_4,
+      week_day_4_opening: res.week_day_4_opening,
+      week_day_4_closing: res.week_day_4_closing,
+      week_day_5: res.week_day_5,
+      week_day_5_opening: res.week_day_5_opening,
+      week_day_5_closing: res.week_day_5_closing,
+      week_day_6: res.week_day_6,
+      week_day_6_opening: res.week_day_6_opening,
+      week_day_6_closing: res.week_day_6_closing,
+      week_day_7: res.week_day_7,
+      week_day_7_opening: res.week_day_7_opening,
+      week_day_7_closing: res.week_day_7_closing,
     }, this.setMap(res.latLng),
     );
     })
@@ -146,46 +204,20 @@ class ShowPlace extends Component {
     });
   }
 
-  // check () {
-  //     const refsKeys = Object.keys(this.refs);
-  //       refsKeys.forEach((key) => {
-  //       const node = document.createElement('LABEL');
-  //       node.classList.add('warning-lable');
-  //       const textNode = document.createTextNode('This field can\'t be empty!');
-  //       node.appendChild(textNode);
-         
-  //       if (!this.refs[key].value && key !== 'form' && key !== 'comment') {
-  //         this.refs[key].parentElement.appendChild(node);
-  //       }
-         
-  //     });
-  //   }
-
-
-
-  // addNewComment (e) {
-  //   e.preventDefault();
-  //   this.check();
-  //   const comment = this.refs.comment.value;
-
-  //   const review = {
-  //     comment
-  //   };
-  //   this.props.dispatch(actions.addReviews(review));
-  //   this.refs.form.reset();
-  // }
-
-
   render () {
 
 
     const {
       name, 
       images, 
+      featuredimages, 
       location, 
       zipcode,
       description, 
       parentnotes, 
+      features, 
+      faq, 
+      pricing, 
       placeEmail, 
       website, 
       phone, 
@@ -224,7 +256,28 @@ class ShowPlace extends Component {
       indoor_play,
       indoor_play_description,
       water_play,
-      water_play_description
+      water_play_description,
+      week_day_1,
+      week_day_1_opening,
+      week_day_1_closing,
+      week_day_2,
+      week_day_2_opening,
+      week_day_2_closing,
+      week_day_3,
+      week_day_3_opening,
+      week_day_3_closing,
+      week_day_4,
+      week_day_4_opening,
+      week_day_4_closing,
+      week_day_5,
+      week_day_5_opening,
+      week_day_5_closing,
+      week_day_6,
+      week_day_6_opening,
+      week_day_6_closing,
+      week_day_7,
+      week_day_7_opening,
+      week_day_7_closing
     } = this.state;
     const date = moment.unix(createdAt).format('MMMM Do, YYYY @ k:mm ');
     const {cityImg} = this.props;
@@ -252,10 +305,37 @@ class ShowPlace extends Component {
     const show_indoor_play = this.state.indoor_play == 'yes' ? true : false;
     const show_water_play = this.state.water_play == 'yes' ? true : false;
 
+
+    const show_week_day_1_full = this.state.week_day_1 == '1' ? true : false;
+    const show_week_day_1_time = this.state.week_day_1 == '2' ? true : false;
+    const show_week_day_1_closed = this.state.week_day_1 == '3' ? true : false;
+    const show_week_day_2_full = this.state.week_day_2 == '1' ? true : false;
+    const show_week_day_2_time = this.state.week_day_2 == '2' ? true : false;
+    const show_week_day_2_closed = this.state.week_day_2 == '3' ? true : false;
+    const show_week_day_3_full = this.state.week_day_3 == '1' ? true : false;
+    const show_week_day_3_time = this.state.week_day_3 == '2' ? true : false;
+    const show_week_day_3_closed = this.state.week_day_3 == '3' ? true : false;
+    const show_week_day_4_full = this.state.week_day_4 == '1' ? true : false;
+    const show_week_day_4_time = this.state.week_day_4 == '2' ? true : false;
+    const show_week_day_4_closed = this.state.week_day_4 == '3' ? true : false;
+    const show_week_day_5_full = this.state.week_day_5 == '1' ? true : false;
+    const show_week_day_5_time = this.state.week_day_5 == '2' ? true : false;
+    const show_week_day_5_closed = this.state.week_day_5 == '3' ? true : false;
+    const show_week_day_6_full = this.state.week_day_6 == '1' ? true : false;
+    const show_week_day_6_time = this.state.week_day_6 == '2' ? true : false;
+    const show_week_day_6_closed = this.state.week_day_6 == '3' ? true : false;
+    const show_week_day_7_full = this.state.week_day_7 == '1' ? true : false;
+    const show_week_day_7_time = this.state.week_day_7 == '2' ? true : false;
+    const show_week_day_7_closed = this.state.week_day_7 == '3' ? true : false;
+    
+
+    const {id} = this.props.params;
+    const {website2} = this.state.website;
+
     return (
       <div className='place'>
         <div className='row'>
-            <div className="place__info col-8 pr-4">
+            <div className="place__info col-8">
 
                 <div className="place__title">
                     <h4>{name}</h4>
@@ -273,23 +353,34 @@ class ShowPlace extends Component {
                     }
                 </div>
 
-                <div className='place__images'>
-
-                    
+                <div className='place__images'>                    
                     <ul className='p-0'>
-                        <li>
-                            <img className='img-thumbnail' src={images}/>
-                        </li>
-                        <li>
-                            <img className='img-thumbnail' src={imgSrc}/>
-                        </li>
-                        <li>
-                            <img className='img-thumbnail' src={imgSrc}/>
-                        </li>
+                    {
+                        images ? (
+                            images.map(function(item) {
+                                return <li><img className='img-fluid' src={item.image}/></li>;
+                            })    
+                        ) : ''
+                    }
+                    <Link className='more' to={`place/${id}/images`}>See all photos</Link>
                     </ul>
+                    
                 </div>
 
                 <div className='row'>
+
+                    <div className='place__guide__item col-12'>
+                        <div className='colored-gray'>Features</div>
+                        <p>{features}</p>
+                    </div>
+                    <div className='place__guide__item col-12'>
+                        <div className='colored-gray'>FAQ</div>
+                        <p>{faq}</p>
+                    </div>
+                    <div className='place__guide__item col-12'>
+                        <div className='colored-gray'>Pricing</div>
+                        <p>{pricing}</p>
+                    </div>
                     <ul className='place__guide col-6'>
                         { show_nursing  ? (
                         <li className='place__guide__item'>
@@ -485,18 +576,18 @@ class ShowPlace extends Component {
                     </div>
                 </div>
 
-                { show_website  ? (
+
                 <div className='place__sidebar__item'>
                     <h5 className='place__sidebar__item--title'>Website</h5>
-                    <p><a href='{website}' target='_blank'>{website}</a></p>
+                    <link to={`${website2}`}>{website}</link>
                 </div>
-                ) : ('')
-                }
+
+
 
                 { show_phone  ? (
                 <div className='place__sidebar__item'>
                     <h5 className='place__sidebar__item--title'>Phone</h5>
-                    <p><a href='tel:{phone}'>{phone}</a></p>
+                    <p><a href='{phone}'>{phone}</a></p>
                 </div>
                 ) : ('')
                 }
@@ -508,6 +599,197 @@ class ShowPlace extends Component {
                 </div>
                 ) : ('')
                 }
+
+
+                <div className='place__sidebar__item'>
+                    <h5 className='place__sidebar__item--title'>Timing</h5>
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <td>Opening time</td>
+                                <td>Closing time</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            { show_week_day_1_time  ? (
+                            <tr>
+                                <td>Mon: </td>
+                                <td><span className='time-inner'><span>{week_day_1_opening}</span></span></td>
+                                <td><span className='time-inner'><span>{week_day_1_closing}</span></span></td>
+                            </tr>
+                            ) : null
+                            }
+                            { show_week_day_1_full  ? (
+                                <tr>
+                                    <td>Mon: </td>
+                                    <td>Full day</td>
+                                    <td></td>
+                                </tr>
+                            ) : null
+                            }
+                            { show_week_day_1_closed  ? (
+                            <tr>
+                                <td>Mon: </td>
+                                <td>Closed</td>
+                                <td></td>
+                            </tr>
+                            ) : null
+                            }
+
+                            { show_week_day_2_time  ? (
+                            <tr>
+                                <td>Tue: </td>
+                                <td><span className='time-inner'><span>{week_day_2_opening}</span></span></td>
+                                <td><span className='time-inner'><span>{week_day_2_closing}</span></span></td>
+                            </tr>
+                            ) : null
+                            }
+                            { show_week_day_2_full  ? (
+                                <tr>
+                                    <td>Tue: </td>
+                                    <td>Full day</td>
+                                    <td></td>
+                                </tr>
+                            ) : null
+                            }
+                            { show_week_day_2_closed  ? (
+                            <tr>
+                                <td>Tue: </td>
+                                <td>Closed</td>
+                                <td></td>
+                            </tr>
+                            ) : null
+                            }
+
+                            { show_week_day_3_time  ? (
+                            <tr>
+                                <td>wed: </td>
+                                <td><span className='time-inner'><span>{week_day_3_opening}</span></span></td>
+                                <td><span className='time-inner'><span>{week_day_3_closing}</span></span></td>
+                            </tr>
+                            ) : null
+                            }
+                            { show_week_day_3_full  ? (
+                                <tr>
+                                    <td>wed: </td>
+                                    <td>Full day</td>
+                                    <td></td>
+                                </tr>
+                            ) : null
+                            }
+                            { show_week_day_3_closed  ? (
+                            <tr>
+                                <td>wed: </td>
+                                <td>Closed</td>
+                                <td></td>
+                            </tr>
+                            ) : null
+                            }
+
+                            { show_week_day_4_time  ? (
+                            <tr>
+                                <td>Thurs: </td>
+                                <td><span className='time-inner'><span>{week_day_4_opening}</span></span></td>
+                                <td><span className='time-inner'><span>{week_day_4_closing}</span></span></td>
+                            </tr>
+                            ) : null
+                            }
+                            { show_week_day_4_full  ? (
+                                <tr>
+                                    <td>Thurs: </td>
+                                    <td>Full day</td>
+                                    <td></td>
+                                </tr>
+                            ) : null
+                            }
+                            { show_week_day_4_closed  ? (
+                            <tr>
+                                <td>Thurs: </td>
+                                <td>Closed</td>
+                                <td></td>
+                            </tr>
+                            ) : null
+                            }
+
+                            { show_week_day_5_time  ? (
+                            <tr>
+                                <td>Fri: </td>
+                                <td><span className='time-inner'><span>{week_day_5_opening}</span></span></td>
+                                <td><span className='time-inner'><span>{week_day_5_closing}</span></span></td>
+                            </tr>
+                            ) : null
+                            }
+                            { show_week_day_5_full  ? (
+                                <tr>
+                                    <td>Fri: </td>
+                                    <td>Full day</td>
+                                    <td></td>
+                                </tr>
+                            ) : null
+                            }
+                            { show_week_day_5_closed  ? (
+                            <tr>
+                                <td>Fri: </td>
+                                <td>Closed</td>
+                                <td></td>
+                            </tr>
+                            ) : null
+                            }
+
+                            { show_week_day_6_time  ? (
+                            <tr>
+                                <td>Sat: </td>
+                                <td><span className='time-inner'><span>{week_day_6_opening}</span></span></td>
+                                <td><span className='time-inner'><span>{week_day_6_closing}</span></span></td>
+                            </tr>
+                            ) : null
+                            }
+                            { show_week_day_6_full  ? (
+                                <tr>
+                                    <td>Sat: </td>
+                                    <td>Full day</td>
+                                    <td></td>
+                                </tr>
+                            ) : null
+                            }
+                            { show_week_day_6_closed  ? (
+                            <tr>
+                                <td>Sat: </td>
+                                <td>Closed</td>
+                                <td></td>
+                            </tr>
+                            ) : null
+                            }
+
+                            { show_week_day_7_time  ? (
+                            <tr>
+                                <td>Sun: </td>
+                                <td><span className='time-inner'><span>{week_day_7_opening}</span></span></td>
+                                <td><span className='time-inner'><span>{week_day_7_closing}</span></span></td>
+                            </tr>
+                            ) : null
+                            }
+                            { show_week_day_7_full  ? (
+                                <tr>
+                                    <td>Sun: </td>
+                                    <td>Full day</td>
+                                    <td></td>
+                                </tr>
+                            ) : null
+                            }
+                            { show_week_day_7_closed  ? (
+                            <tr>
+                                <td>Sun: </td>
+                                <td>Closed</td>
+                                <td></td>
+                            </tr>
+                            ) : null
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
 
 
             </div>

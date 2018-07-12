@@ -54,10 +54,28 @@ class ControlsBar extends Component{
             <li className="nav-item date-hover nav-filter">
               <a className="btn" href="#">Category</a>
                 <div onClick={this.handleFilter.bind(this)} className='date-dropdown'>
-                  <p data-key='category'>Baby Products</p>
-                  <p data-key='category'>Activities for Kids</p>
-                  <p data-key='category'>Toys & Gifts</p>
-                  <p data-key='category'>All</p>
+                  <p data-key='category'>Pregnancy Advice</p>
+                  <p data-key='category'>Beauty and Fashion</p>
+                  <p data-key='category'>Baby massage</p>
+                  <p data-key='category'>Pregnancy photography</p>
+                  <p data-key='category'>Mother nutritionist</p>
+                  <p data-key='category'>Lactation support</p>
+                  <p data-key='category'>Post natal yoga</p>
+                  <p data-key='category'>Mom health</p>
+                  <p data-key='category'>Physiotherpest</p>
+                  <p data-key='category'>Play Schools</p>
+                  <p data-key='category'>Day Care</p>
+                  <p data-key='category'>Fun Places</p>
+                  <p data-key='category'>Baby Nutritionist</p>
+                  <p data-key='category'>Hobbies</p>
+                  <p data-key='category'>Sports</p>
+                  <p data-key='category'>Shopping</p>
+                  <p data-key='category'>Early learning</p>
+                  <p data-key='category'>Gifts for children</p>
+                  <p data-key='category'>Birthdays</p>
+                  <p data-key='category'>Vaccination</p>
+                  <p data-key='category'>Baby massage</p>
+                  <p data-key='category'>Toys</p>
                 </div>
             </li>
           </ul>

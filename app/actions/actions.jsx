@@ -1,79 +1,7 @@
 import firebase, {firebaseRef} from '../firebase/index'
 import moment from 'moment'
-// import Rating from 'rating'
 
 
-
-
-// export const startRating = (ratingValue) => {
-
-//   return (dispatch, getState) => {
-
-//     const uid = getState().auth.uid;
-//     const ratingRef = firebaseRef.database().ref('users/review').push(rating);
-
-
-//     return ratingRef.then(() => {
-//       dispatch(addRating({
-//         ...rating,
-//         id: ratingRef.value
-//       }))
-//     })
-//   }
-// };
-
-
-
-
-
-
-// export const addReviews = (commentVal) => {
-//   return (dispatch, getState) => {
-//     const placeRef = firebaseRef.database().ref(`places/${id}`);
-//     const {id} = placeRef.key
-    
-//     const placeId = firebaseRef.database().ref(`places/${id}`);
-
-//     const createdAt = moment().unix();
-//     const formatedDate = moment.unix(createdAt).format('DDDD, MMMM, YYYY');
-//     const review =
-//       {
-//         ...commentVal,
-//         formatedDate
-//        };
-
-//     const commentRef = firebaseRef.database().ref(`${placeId}/review`).push(review);
-//     return commentRef.then(() => {
-//       dispatch(addComment({
-//         ...review,
-//         id: placeRef.key
-//       }))
-//     })
-//   }
-// };
-
-
-// export const startGetReviews = () => {
-//   return (dispatch, getState) => {
-//     const userId = firebaseRef.auth().currentUser.uid;
-//     const placeId = firebaseRef.database().ref(`places/${id}`);
-
-//       const commentRef = firebaseRef.database().ref(`users/${placeId}/review`);
-//       return commentRef.once('value').then((snapshot) => {
-//         const commentsVal = snapshot.val() || {};
-//         let reviews = [];
-//         const commentKeys = Object.keys(commentsVal);
-//         commentKeys.forEach((id) => {
-//           reviews.push({
-//             id,
-//             ...commentVal[id]
-//           });
-//         });
-//         console.log(reviews);
-//         dispatch(addComments(reviews))
-//       })
-//   }
-// };
 
 export const startAddPlace = (placeVal) => {
   return (dispatch, getState) => {
@@ -121,6 +49,13 @@ export const show = (id) => {
     return (dispatch, getState) =>{
         const showRef = firebaseRef.database().ref(`places/${id}`);
         return showRef.once('value')
+    }
+}
+
+export const showImages = (id) => {
+    return (dispatch, getState) =>{
+        const showImagesRef = firebaseRef.database().ref(`places/${id}/images`);
+        return showImagesRef.once('value')
     }
 }
 
@@ -242,13 +177,6 @@ export const addPlace = (place) => {
 }
 
 
-export const addComment = (comment) => {
-  return {
-    type:'ADD_COMMENT',
-    comment
-  };
-}
-
 export const getSearch = (search) => {
   return {
     type: 'GET_SEARCH',
@@ -271,6 +199,7 @@ export const removeFilter = (key, property) => {
     property
   }
 }
+
 
 export const editPlace = (place) => {
   return {

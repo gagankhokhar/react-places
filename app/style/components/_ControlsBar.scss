@@ -1,52 +1,73 @@
 //date dropdown menu
 .date-hover{
-  position: relative;
-  .date-dropdown{
-    padding: .5rem;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    position: absolute;
-    left: 0;
-    min-width: 150px;
-    background-color: #fff;
-    z-index: 10;
-    display: none;
-    text-transform: capitalize;
-    p{
-      cursor: pointer;
-      &:hover{
-        background-color: #f1f1f1;
-      }
-    }
-  }
-  &:hover{
+    position: relative;
     .date-dropdown{
-      display: block;
+        padding: .5rem;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        position: absolute;
+        left: 0;
+        min-width: 160px;
+        background-color: #fff;
+        z-index: 10;
+        display: none;
+        text-transform: capitalize;
+        max-height: 300px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        margin-top: 14px;
+        border-radius: 4px;
+        p{
+            cursor: pointer;
+            &:hover{
+                background-color: #f1f1f1;
+            }
+        }
     }
-  }
+    &:hover{
+        .date-dropdown{
+            display: block;
+        }
+        .btn{
+            &:before{
+                visibility: visible !important;
+            }
+        }
+    }
 }
 
 .controls-list{
-  .btn{
-    margin-right: .5rem;
-  }
-  .date-hover{
     .btn{
-      background-color: #fff;
-      color: #333;
-      box-shadow: 1px 1px 2px 0px rgba(74,74,74,0.25);
-        &:after {
-            
-            display: inline-block;
-            width: 0;
-            height: 0;
-            margin-left: .255em;
-            vertical-align: .255em;
-            content: "";
-            border-top: .3em solid;
-            border-right: .3em solid transparent;
-            border-left: .3em solid transparent;
+        margin-right: .5rem;
+    }
+    .date-hover{
+        .btn{
+            position: relative;
+            background-color: #fff;
+            color: #333;
+            box-shadow: 1px 1px 2px 0px rgba(74,74,74,0.25);
+            &:after {
+                content: "";
+                display: inline-block;
+                width: 0;
+                height: 0;
+                margin-left: .255em;
+                vertical-align: .255em;
+                border-top: .3em solid;
+                border-right: .3em solid transparent;
+                border-left: .3em solid transparent;
 
+            }
+            &:before {
+                content: "";
+                border-bottom: 12px solid #fff;
+                border-right: 12px solid transparent;
+                border-left: 12px solid transparent;
+                position: absolute;
+                bottom: -15px;
+                left: 50%;
+                margin-left: -12px;
+                visibility: hidden;
+          }
         }
     }
-  }
 }

@@ -10,13 +10,17 @@ class Place extends Component {
   }
 
   render () {
-
-    const {id, name, location, info, description, cityImg, createdAt, city} = this.props;
+  
+    const {id, name, location, info, description, cityImg, createdAt, city, images} = this.props;
     const imgSrc = cityImg || placeholder;
+    let imgUse = imgSrc;
+    if (images && images.length) {
+      imgUse = images[0].image;
+    }
     const date = moment.unix(createdAt).format('MMMM Do, YYYY @ k:mm ');
     return (
       <div onClick={this.showPlace.bind(this)} className='place-item'>
-        <img src={imgSrc}/>
+        <img src={imgUse}/>
         <div>
           <h3 className='font-weight-normal mb-0'>{name}</h3>
           <small className='text-muted d-block'>{city}, {location}</small>

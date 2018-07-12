@@ -6,7 +6,7 @@ export default class ImageUploader extends Component {
     super(props);
     this.state = { file: '', imagePreview: '' };
     console.log('imageuploader');
-    console.log(this.props.image_field);
+
 
     this.handlePreview = this.handlePreview.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
@@ -26,8 +26,8 @@ export default class ImageUploader extends Component {
   handleUpload() {
 
     const uploadTask = firebaseRef.storage().ref()
-      .child(`place/${this.state.file.name}`)
-      .put(this.state.file);
+        .child(`place/${this.state.file.name}`)
+        .put(this.state.file);
     
     uploadTask.on(
       'state_changed',
@@ -40,7 +40,7 @@ export default class ImageUploader extends Component {
       () => {
         // final url of the image
         console.log(uploadTask.snapshot.downloadURL);
-        // this.refs.images.value = uploadTask.snapshot.downloadURL;
+        // this.refs.featuredimages.value = uploadTask.snapshot.downloadURL;
        this.refs.images.value = uploadTask.snapshot.downloadURL;
 
       },
@@ -49,29 +49,25 @@ export default class ImageUploader extends Component {
 
   render() {
     return (
-      <ul className="photos">
-        <li>
-          <div className="upload">
-              <label>
-              <input type="hidden" ref="images" name="store_images" />
-                  <input
-                      placeholder="ImageUpload"
-                      type="file"
-                      onChange={(event) => {
-                        this.handlePreview(event.target.files);
-                      }}
+        <div className='store__images'>
+            <div className='store__images--item store__images--selector'>
+                <label>
+                    <input type="hidden" ref="featuredimages"/>
+                    <input
+                        placeholder="ImageUpload"
+                        type="file"
+                        onChange={(event) => {
+                            this.handlePreview(event.target.files);
+                        }}
                     />
-                  <span>+</span>
-              </label>
-          </div>
-          <span onClick={this.handleUpload}>Upload</span>
-        </li>
-        <li className="photo">
-          {this.state.imagePreview && <img src={this.state.imagePreview} />}
-        </li>
-        <li className="photo">
-        </li>
-      </ul>
+                    <span>+</span>
+                </label>
+            </div>
+            <span onClick={this.handleUpload}>Upload</span>
+            <li className='store__images--item store__images--selector'>
+              {this.state.imagePreview && <img src={this.state.imagePreview} />}
+            </li>
+        </div>
     );
   }
 }

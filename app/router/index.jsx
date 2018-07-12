@@ -14,6 +14,7 @@ import User from 'User'
 import Registration from 'Registration'
 import Hoc from 'Hoc'
 import Preloader from 'Preloader'
+import AllImages from 'AllImages'
 
 
 const requireLogin = (nextState, replace, next) => {
@@ -41,6 +42,7 @@ export default (
       <Route path='person' component={Person}/>
       <Route path='place/:id' component={ShowPlace}/>
       <Route path='edit/:id' component={EditPlace}/>
+      <Route path='place/:id/images' component={AllImages}/>
       <IndexRoute  component={Hoc(PlaceList, Preloader)}/>
     </Route>
     <Route onEnter={requireLogout} path='registration' component={Registration}/>

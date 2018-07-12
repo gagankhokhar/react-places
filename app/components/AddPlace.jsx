@@ -8,9 +8,10 @@ import 'react-tabs/style/react-tabs.scss'
 import {firebaseRef} from '../firebase/index'
 import FileUpload from '../gallery/FileUpload';
 // import ImageUploader from './ImageUploader/index'
-
-
-
+import TimePicker from 'rc-time-picker'
+import 'rc-time-picker/assets/index.css'
+// import ImageGallery from '../gallery/FileUploadFeatured';
+import Modal from 'react-modal'
 
 class AddPlace extends Component {
 
@@ -19,38 +20,141 @@ class AddPlace extends Component {
     this.state = {
       cities: [],
       hidden: true,
-      // tabIndex: 0,
-      // file: '', 
-      // imagePreview: '',
-
+      tabIndex: 0,
       uploadValue: 0,
-      images: []
+      images: [],
+      show_week_day_1_full: true,
+      show_week_day_1_time: false,
+      show_week_day_1_closed: false,
+      show_week_day_2_full: true,
+      show_week_day_2_time: false,
+      show_week_day_2_closed: false,
+      show_week_day_3_full: true,
+      show_week_day_3_time: false,
+      show_week_day_3_closed: false,
+      show_week_day_4_full: true,
+      show_week_day_4_time: false,
+      show_week_day_4_closed: false,
+      show_week_day_5_full: true,
+      show_week_day_5_time: false,
+      show_week_day_5_closed: false,
+      show_week_day_6_full: true,
+      show_week_day_6_time: false,
+      show_week_day_6_closed: false,
+      show_week_day_7_full: true,
+      show_week_day_7_time: false,
+      show_week_day_7_closed: false
+
     };
-    // console.log('imageuploader');
-    // console.log(this.props.images);
+    console.log('imageuploader');
+    console.log(this.props.images);
 
-    // this.handlePreview = this.handlePreview.bind(this);
-    // this.handleUpload = this.handleUpload.bind(this);
-
+    this.handleChange_1 = this.handleChange_1.bind(this);
+    this.handleChange_2 = this.handleChange_2.bind(this);
+    this.handleChange_3 = this.handleChange_3.bind(this);
+    this.handleChange_4 = this.handleChange_4.bind(this);
+    this.handleChange_5 = this.handleChange_5.bind(this);
+    this.handleChange_6 = this.handleChange_6.bind(this);
+    this.handleChange_7 = this.handleChange_7.bind(this);
+this.openModalImage = this.openModalImage.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
   }
 
+  handleChange_time(event) {
+      let value = event.target.value;
+  }
+
+  handleChange_1(event) {
+      let value = event.target.value;
+      
+      this.setState({
+          show_week_day_1_full: value == '1',
+          show_week_day_1_time: value == '2',
+          show_week_day_1_closed: value == '3'
+      });
+  }
+  handleChange_2(event) {
+   
+      let value = event.target.value;
+      this.setState({
+          show_week_day_2_full: value == '1',
+          show_week_day_2_time: value == '2',
+          show_week_day_2_closed: value == '3'
+      }); 
+  }
+  handleChange_3(event) {
+   
+      let value = event.target.value;
+      this.setState({
+          show_week_day_3_full: value == '1',
+          show_week_day_3_time: value == '2',
+          show_week_day_3_closed: value == '3'
+      }); 
+  }
+  handleChange_4(event) {
+   
+      let value = event.target.value;
+      this.setState({
+          show_week_day_4_full: value == '1',
+          show_week_day_4_time: value == '2',
+          show_week_day_4_closed: value == '3'
+      }); 
+  }
+  handleChange_5(event) {
+   
+      let value = event.target.value;
+      this.setState({
+          show_week_day_5_full: value == '1',
+          show_week_day_5_time: value == '2',
+          show_week_day_5_closed: value == '3'
+      }); 
+  }
+  handleChange_6(event) {
+   
+      let value = event.target.value;
+      this.setState({
+          show_week_day_6_full: value == '1',
+          show_week_day_6_time: value == '2',
+          show_week_day_6_closed: value == '3'
+      }); 
+  }
+  handleChange_7(event) {
+   
+      let value = event.target.value;
+      this.setState({
+          show_week_day_7_full: value == '1',
+          show_week_day_7_time: value == '2',
+          show_week_day_7_closed: value == '3'
+      }); 
+  }
+
   check () {
+    let hasError = false;
       const refsKeys = Object.keys(this.refs);
         refsKeys.forEach((key) => {
-        const node = document.createElement('LABEL');
-        node.classList.add('warning-lable');
-        const textNode = document.createTextNode('This field can\'t be empty!');
-        node.appendChild(textNode);
-         
+        
         if (!this.refs[key].value && key !== 'form' && key !== 'category') {
+            const node = document.createElement('LABEL');
+            node.classList.add('warning-lable');
+            const textNode = document.createTextNode('This field can\'t be empty!');
+            node.appendChild(textNode);
           this.refs[key].parentElement.appendChild(node);
+          hasError = true;
         }
          
       });
+        if (hasError) {
+            this.setState({openImage: true})
+        }
     }
 
-
+    openModalImage() {
+        return (
+            <Modal contentLabel="Image Modal">
+            Hello
+          </Modal>
+        );
+    }
 
   handleGetCities () {
       //probaly may create erros
@@ -74,9 +178,10 @@ class AddPlace extends Component {
 
   addNewPlace (e) {
     e.preventDefault();
+    this.check();
     const {uid, email} = this.props.auth;
     const name = this.refs.name.value;
-    const images = this.refs.images.value;
+    const images = this.state.images;
     const location = this.refs.location.value;
     const zipcode = this.refs.zipcode.value;
     const placeEmail = this.refs.placeEmail.value;
@@ -84,6 +189,9 @@ class AddPlace extends Component {
     const phone = this.refs.phone.value;
     const description = this.refs.description.value;
     const parentnotes = this.refs.parentnotes.value;
+    const features = this.refs.features.value;
+    const faq = this.refs.faq.value;
+    const pricing = this.refs.pricing.value;
     const city = this.refs.city.value;
     const category = this.refs.category.innerHTML;
     const nursing_great = this.nursing_great_select.value;
@@ -118,6 +226,50 @@ class AddPlace extends Component {
     const indoor_play_description = this.refs.indoor_play_description.value;
     const water_play = this.water_play_select.value;
     const water_play_description = this.refs.water_play_description.value;
+
+    const week_day_1 = this.week_day_1_select.value;
+    let week_day_1_opening, week_day_1_closing;
+    if(week_day_1 == '2') {
+        week_day_1_opening = this.refs.week_day_1_timepicker_open.state.value.toString();
+        week_day_1_closing = this.refs.week_day_1_timepicker_close.state.value.toString();
+    }
+    const week_day_2 = this.week_day_2_select.value;
+    let week_day_2_opening, week_day_2_closing;
+    if(week_day_2 == '2') {
+        week_day_2_opening = this.refs.week_day_2_timepicker_open.state.value.toString();
+        week_day_2_closing = this.refs.week_day_2_timepicker_close.state.value.toString();
+    }
+    const week_day_3 = this.week_day_3_select.value;
+    let week_day_3_opening, week_day_3_closing;
+    if(week_day_3 == '2') {
+        week_day_3_opening = this.refs.week_day_3_timepicker_open.state.value.toString();
+        week_day_3_closing = this.refs.week_day_3_timepicker_close.state.value.toString();
+    }
+    const week_day_4 = this.week_day_4_select.value;
+    let week_day_4_opening, week_day_4_closing;
+    if(week_day_4 == '2') {
+        week_day_4_opening = this.refs.week_day_4_timepicker_open.state.value.toString();
+        week_day_4_closing = this.refs.week_day_4_timepicker_close.state.value.toString();
+    }
+    const week_day_5 = this.week_day_5_select.value;
+    let week_day_5_opening, week_day_5_closing;
+    if(week_day_5 == '2') {
+        week_day_5_opening = this.refs.week_day_5_timepicker_open.state.value.toString();
+        week_day_5_closing = this.refs.week_day_5_timepicker_close.state.value.toString();
+    }
+    const week_day_6 = this.week_day_6_select.value;
+    let week_day_6_opening, week_day_6_closing;
+    if(week_day_6 == '2') {
+        week_day_6_opening = this.refs.week_day_6_timepicker_open.state.value.toString();
+        week_day_6_closing = this.refs.week_day_6_timepicker_close.state.value.toString();
+    }
+    const week_day_7 = this.week_day_7_select.value;
+    let week_day_7_opening, week_day_7_closing;
+    if(week_day_7 == '2') {
+        week_day_7_opening = this.refs.week_day_7_timepicker_open.state.value.toString();
+        week_day_7_closing = this.refs.week_day_7_timepicker_close.state.value.toString();
+    }
+
     let latLng ={};
     let cityImg = '';
     const fulllocation = `${city}, ${location}, ${zipcode}`;
@@ -135,7 +287,7 @@ class AddPlace extends Component {
       latLng.lat = res[0].geometry.location.lat();
       latLng.lng = res[0].geometry.location.lng();
 
-        const place = {
+        let place = {
           uid,
           images,
           email,
@@ -147,6 +299,9 @@ class AddPlace extends Component {
           phone,
           description,
           parentnotes,
+          features,
+          faq,
+          pricing,
           city: cityArr[0].trim(),
           category,
           latLng,
@@ -182,8 +337,38 @@ class AddPlace extends Component {
           indoor_play,
           indoor_play_description,
           water_play,
-          water_play_description
+          water_play_description,
+          week_day_1,
+          week_day_2,
+          week_day_3,
+          week_day_4,
+          week_day_5,
+          week_day_6,
+          week_day_7
         };
+
+        if(week_day_1 == '2') {
+            place = { ...place, week_day_1_opening, week_day_1_closing};
+        }
+        if(week_day_2 == '2') {
+            place = { ...place, week_day_2_opening, week_day_2_closing};
+        }
+        if(week_day_3 == '2') {
+            place = { ...place, week_day_3_opening, week_day_3_closing};
+        }
+        if(week_day_4 == '2') {
+            place = { ...place, week_day_4_opening, week_day_4_closing};
+        }
+        if(week_day_5 == '2') {
+            place = { ...place, week_day_5_opening, week_day_5_closing};
+        }
+        if(week_day_6 == '2') {
+            place = { ...place, week_day_6_opening, week_day_6_closing};
+        }
+        if(week_day_7 == '2') {
+            place = { ...place, week_day_7_opening, week_day_7_closing};
+        }
+
         this.props.dispatch(actions.startAddPlace(place));
         this.refs.form.reset();
       
@@ -213,52 +398,6 @@ class AddPlace extends Component {
     }
   }
 
-  // handleUpload() {
-
-  //   const uploadTask = firebaseRef.storage().ref()
-  //     .child(`place/${this.state.file.name}`)
-  //     .put(this.state.file);
-    
-  //   uploadTask.on(
-  //     'state_changed',
-  //     (snapshot) => {
-  //       console.log(snapshot);
-  //     },
-  //     (error) => {
-  //       console.log(error);
-  //     },
-  //     () => {
-  //       // final url of the image
-  //       console.log(uploadTask.snapshot);
-  //       console.log(uploadTask.snapshot.downloadURL);
-  //       this.refs.images.value = uploadTask.snapshot.downloadURL;
-  //      // this.props.images.value = uploadTask.snapshot.downloadURL;
-  //      // this.props.image_field.value = uploadTask.snapshot.downloadURL;
-  //     },
-  //   );
-  // }
-
-  // handlePreview(file) {
-  //   const reader = new FileReader();
-  //   reader.onloadend = () => {
-  //     this.setState({
-  //       file: file[0],
-  //       imagePreview: reader.result,
-  //     });
-  //   };
-  //   reader.readAsDataURL(file[0]);
-  // }
-
-    componentWillMount() {
-
-        firebaseRef.database().ref('place').on('child_added', snapshot => {
-            this.setState({
-                images: this.state.images.concat(snapshot.val())
-            });
-        });
-    }
-
-
     renderFileUploadButton() {
         return (
             <FileUpload uploadValue={ this.state.uploadValue } onUpload={ this.handleUpload } />
@@ -267,46 +406,58 @@ class AddPlace extends Component {
 
     handleUpload(event) {
         if (event && event.target && event.target.files.length) {
-            //Get the file from the event.
-            const file = event.target.files[0];
-            //Receive the reference.
-            const storageRef = firebaseRef.storage().ref(`/place/${file.name}`);
-            //Task to upload the file to Firebase.
-            const task = storageRef.put(file);
-            //Firebase utility to receive the file status.
-            task.on('state_changed', snapshot => {
-                let percentage = (snapshot.bytesTransferred /snapshot.totalBytes) * 100;
-                this.setState({
-                    uploadValue: percentage
-                });
-            }, error => {
-                console.log(error.message);
-            }, () => { //Image already uploaded.
-                const record = {
-                    id: task.snapshot.metadata.generation,
-                    name: task.snapshot.metadata.name,
-                    image: task.snapshot.downloadURL
-                };
-  
-                const dbRef = firebaseRef.database().ref('place').push();
-                const newImage = dbRef.push();
-                newImage.set(record);
+            const that = this;
+            for (let i = 0; i < event.target.files.length; i = i + 1 ) {
+                ( (item) => {
+                    //Get the file from the event.
+                    const file = item;
+                    //Receive the reference.
+                    const storageRef = firebaseRef.storage().ref(`/place/${file.name}`);
+                    //Task to upload the file to Firebase.
+                    const task = storageRef.put(file);
+                    //Firebase utility to receive the file status.
+                    task.on('state_changed', snapshot => {
+                        let percentage = (snapshot.bytesTransferred /snapshot.totalBytes) * 100;
+                        that.setState({
+                            uploadValue: percentage
+                        });
+                    }, error => {
+                        console.log(error.message);
+                    }, () => { //Image already uploaded.
+                        const record = {
+                            id: task.snapshot.metadata.generation,
+                            name: task.snapshot.metadata.name,
+                            image: task.snapshot.downloadURL
+                        };
+          
+                        const dbRef = firebaseRef.database().ref('place').push();
+                        const newImage = dbRef.push();
+                        newImage.set(record);
 
-                //Chapuza - After login and upload an image don't refresh image list, but the image is uploaded.
-                const prev = this.state.images.length;
-                newImage.set(record);
-                const post = this.state.images.length;
-                
-                if (post === prev) {
-                    this.setState({
-                        images: this.state.images.concat(record)
-                    });
-                }
-                this.refs.images.value = task.snapshot.downloadURL;
-                //end Chapuza
-            });
+                            that.setState({
+                                images: that.state.images.concat(record)
+                            });
+                        // }
+                        // let curr = that.refs.images.value;
+                        // let add = task.snapshot.downloadURL;
+                        // if (curr) {
+                        //     curr = curr + '_*_';
+                        // }
+                        // curr = curr + add;
+                        // that.setState({
+                        //     images: curr
+                        // });
+                        // that.refs.images.value = curr;
+                        //end Chapuza
+                    });    
+                }) (event.target.files[i]);
+            }
+            
+            
         }
     }
+
+
 
     render () {
 
@@ -322,18 +473,37 @@ class AddPlace extends Component {
         if(!this.state.hidden) {
             return (
                 <div onClick={this.selectCategory.bind(this)} className='hidden'>
-                    <p>Baby Products</p>
-                    <p>Activities for Kids</p>
-                    <p>Toys & Gifts</p>
-                    <p>Other</p>
+                    <p>Pregnancy Advice</p>
+                    <p>Beauty and Fashion</p>
+                    <p>Baby massage</p>
+                    <p>Pregnancy photography</p>
+                    <p>Mother nutritionist</p>
+                    <p>Lactation support</p>
+                    <p>Post natal yoga</p>
+                    <p>Mom health</p>
+                    <p>Physiotherpest</p>
+                    <p>Play Schools</p>
+                    <p>Day Care</p>
+                    <p>Fun Places</p>
+                    <p>Baby Nutritionist</p>
+                    <p>Hobbies</p>
+                    <p>Sports</p>
+                    <p>Shopping</p>
+                    <p>Early learning</p>
+                    <p>Gifts for children</p>
+                    <p>Birthdays</p>
+                    <p>Vaccination</p>
+                    <p>Baby massage</p>
+                    <p>Toys</p>
                 </div>
             )
         }
     }
+    
     return (
       <div className='NewPlace'>
         <h3 className='action-title'>Add new Store</h3>
-
+{ this.openModalImage() }
             <form ref='form' onSubmit={this.addNewPlace.bind(this)}>
 
                 <Tabs forceRenderTabPanel defaultIndex={0}>
@@ -367,6 +537,18 @@ class AddPlace extends Component {
                                     <label>Information for Parents</label>
                                     <textarea ref='parentnotes' rows="5" className="form-control"  placeholder="What should parents know about visiting this place with children?"/>
                                 </div>
+                                <div className="form-group">
+                                    <label>Features</label>
+                                    <textarea ref='features' rows="5" className="form-control"  placeholder="Features?"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>FAQ</label>
+                                    <textarea ref='faq' rows="5" className="form-control"  placeholder="FAQ?"/>
+                                </div>
+                                <div className="form-group">
+                                    <label>Pricing</label>
+                                    <textarea ref='pricing' rows="5" className="form-control"  placeholder="pricing"/>
+                                </div>
                             </div>
                             <div className='col-6'>
                                 <h4 className='mt-3'>Contact Information</h4>
@@ -382,162 +564,348 @@ class AddPlace extends Component {
                                     <label>Phone</label>
                                     <input ref='phone' type="text" className="form-control"  placeholder="+91 (555) 555-5555"/>
                                 </div>
+                                <div className="form-group">
+                                    <h6>Timing</h6>
+                
+                                    <div className='days mb-1 row justify-content-between align-items-center pl-3 pr-3'>
+                                        <div className='col-2'>
+                                            Monday
+                                        </div>
+                                        <select onChange={(e) => this.handleChange_1(e)} className='form-control col-3' ref={week_day_1 => this.week_day_1_select = week_day_1}>
+                                            <option value='1'>Full day</option>
+                                            <option value='2'>Timing</option>
+                                            <option value='3'>Closed</option>
+                                        </select>
+                                        { this.state.show_week_day_1_full  ? 
+                                            <div className='col-6'>Full Day</div>
+                                         : ''}
+                                        { this.state.show_week_day_1_time  ? 
+                                            <div className='col-6'>
+                                                <div className='row'>
+                                                    <TimePicker 
+                                                        ref='week_day_1_timepicker_open' 
+                                                        defaultValue={moment('12:00:00', 'HH:mm:ss')} 
+                                                        showSecond={false} 
+                                                        placeholder='Opening time' 
+                                                    />
+                                                    <TimePicker 
+                                                        ref='week_day_1_timepicker_close' 
+                                                        defaultValue={moment('13:30:56', 'HH:mm:ss')} 
+                                                        showSecond={false} 
+                                                        placeholder='Closing time' 
+                                                    />
+                                                </div>
+                                            </div>
+                                         : ''}
+                                        { this.state.show_week_day_1_closed  ? 
+                                            <div className='col-6'>Closed</div>
+                                         : ''}
+                                    </div>
+                                    <div className='days mb-1 row justify-content-between align-items-center pl-3 pr-3'>
+                                        <div className='col-2'>
+                                            Tuesday
+                                        </div>
+                                        <select onChange={(e) => this.handleChange_2(e)} className='form-control col-3' ref={week_day_2 => this.week_day_2_select = week_day_2}>
+                                            <option value='1'>Full day</option>
+                                            <option value='2'>Timing</option>
+                                            <option value='3'>Closed</option>
+                                        </select>
+                                        { this.state.show_week_day_2_full  ? 
+                                            <div className='col-6'>Full Day</div>
+                                         : ''}
+                                        { this.state.show_week_day_2_time  ? 
+                                            <div className='col-6'>
+                                                <div className='row'>
+                                                    <TimePicker ref='week_day_2_timepicker_open' defaultValue={moment()} showSecond={false} />
+                                                    <TimePicker ref='week_day_2_timepicker_close' defaultValue={moment()} showSecond={false} />
+                                                </div>
+                                            </div>
+                                         : ''}
+                                        { this.state.show_week_day_2_closed  ? 
+                                            <div className='col-6'>Closed</div>
+                                         : ''}
+                                    </div>
+                                    <div className='days mb-1 row justify-content-between align-items-center pl-3 pr-3'>
+                                        <div className='col-2'>
+                                            Wednesday
+                                        </div>
+                                        <select onChange={(e) => this.handleChange_3(e)} className='form-control col-3' ref={week_day_3 => this.week_day_3_select = week_day_3}>
+                                            <option value='1'>Full day</option>
+                                            <option value='2'>Timing</option>
+                                            <option value='3'>Closed</option>
+                                        </select>
+                                        { this.state.show_week_day_3_full  ? 
+                                            <div className='col-6'>Full Day</div>
+                                         : ''}
+                                        { this.state.show_week_day_3_time  ? 
+                                            <div className='col-6'>
+                                                <div className='row'>
+                                                    <TimePicker ref='week_day_3_timepicker_open' defaultValue={moment()} showSecond={false} />
+                                                    <TimePicker ref='week_day_3_timepicker_close' defaultValue={moment()} showSecond={false} />
+                                                </div>
+                                            </div>
+                                         : ''}
+                                        { this.state.show_week_day_3_closed  ? 
+                                            <div className='col-6'>Closed</div>
+                                         : ''}
+                                    </div>
+                                    <div className='days mb-1 row justify-content-between align-items-center pl-3 pr-3'>
+                                        <div className='col-2'>
+                                            Thursday
+                                        </div>
+                                        <select onChange={(e) => this.handleChange_4(e)} className='form-control col-3' ref={week_day_4 => this.week_day_4_select = week_day_4}>
+                                            <option value='1'>Full day</option>
+                                            <option value='2'>Timing</option>
+                                            <option value='3'>Closed</option>
+                                        </select>
+                                        { this.state.show_week_day_4_full  ? 
+                                            <div className='col-6'>Full Day</div>
+                                         : ''}
+                                        { this.state.show_week_day_4_time  ? 
+                                            <div className='col-6'>
+                                                <div className='row'>
+                                                    <TimePicker ref='week_day_4_timepicker_open' defaultValue={moment()} showSecond={false} />
+                                                    <TimePicker ref='week_day_4_timepicker_close' defaultValue={moment()} showSecond={false} />
+                                                </div>
+                                            </div>
+                                         : ''}
+                                        { this.state.show_week_day_4_closed  ? 
+                                            <div className='col-6'>Closed</div>
+                                         : ''}
+                                    </div>
+                                    <div className='days mb-1 row justify-content-between align-items-center pl-3 pr-3'>
+                                        <div className='col-2'>
+                                            Friday
+                                        </div>
+                                        <select onChange={(e) => this.handleChange_5(e)} className='form-control col-3' ref={week_day_5 => this.week_day_5_select = week_day_5}>
+                                            <option value='1'>Full day</option>
+                                            <option value='2'>Timing</option>
+                                            <option value='3'>Closed</option>
+                                        </select>
+                                        { this.state.show_week_day_5_full  ? 
+                                            <div className='col-6'>Full Day</div>
+                                         : ''}
+                                        { this.state.show_week_day_5_time  ? 
+                                            <div className='col-6'>
+                                                <div className='row'>
+                                                    <TimePicker ref='week_day_5_timepicker_open' defaultValue={moment()} showSecond={false} />
+                                                    <TimePicker ref='week_day_5_timepicker_close' defaultValue={moment()} showSecond={false} />
+                                                </div>
+                                            </div>
+                                         : ''}
+                                        { this.state.show_week_day_5_closed  ? 
+                                            <div className='col-6'>Closed</div>
+                                         : ''}
+                                    </div>
+                                    <div className='days mb-1 row justify-content-between align-items-center pl-3 pr-3'>
+                                        <div className='col-2'>
+                                            Saturday
+                                        </div>
+                                        <select onChange={(e) => this.handleChange_6(e)} className='form-control col-3' ref={week_day_6 => this.week_day_6_select = week_day_6}>
+                                            <option value='1'>Full day</option>
+                                            <option value='2'>Timing</option>
+                                            <option value='3'>Closed</option>
+                                        </select>
+                                        { this.state.show_week_day_6_full  ? 
+                                            <div className='col-6'>Full Day</div>
+                                         : ''}
+                                        { this.state.show_week_day_6_time  ? 
+                                            <div className='col-6'>
+                                                <div className='row'>
+                                                    <TimePicker ref='week_day_6_timepicker_open' defaultValue={moment()} showSecond={false} />
+                                                    <TimePicker ref='week_day_6_timepicker_close' defaultValue={moment()} showSecond={false} />
+                                                </div>
+                                            </div>
+                                         : ''}
+                                        { this.state.show_week_day_6_closed  ? 
+                                            <div className='col-6'>Closed</div>
+                                         : ''}
+                                    </div>
+                                    <div className='days mb-1 row justify-content-between align-items-center pl-3 pr-3'>
+                                        <div className='col-2'>
+                                            Sunday
+                                        </div>
+                                        <select onChange={(e) => this.handleChange_7(e)} className='form-control col-3' ref={week_day_7 => this.week_day_7_select = week_day_7}>
+                                            <option value='1'>Full day</option>
+                                            <option value='2'>Timing</option>
+                                            <option value='3'>Closed</option>
+                                        </select>
+                                        { this.state.show_week_day_7_full  ? 
+                                            <div className='col-6'>Full Day</div>
+                                         : ''}
+                                        { this.state.show_week_day_7_time  ? 
+                                            <div className='col-6'>
+                                                <div className='row'>
+                                                    <TimePicker ref='week_day_7_timepicker_open' defaultValue={moment()} showSecond={false} />
+                                                    <TimePicker ref='week_day_7_timepicker_close' defaultValue={moment()} showSecond={false} />
+                                                </div>
+                                            </div>
+                                         : ''}
+                                        { this.state.show_week_day_7_closed  ? 
+                                            <div className='col-6'>Closed</div>
+                                         : ''}
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
 
-                        <div className='row'>
+                        <div className='row family-amenities'>
                             <fieldset className='col-6'>
                                 <h5 className='NewPlace--heading'>Family Amenities</h5>
                                 <div className="form-group">
                                     <h6>Are there comfortable seats where you could feed/nurse a baby?</h6>
                                     <select className='form-control' ref={nursing_great => this.nursing_great_select = nursing_great}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='nursing_great_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Is there a changing table or place to change a diaper in the restroom?</h6>
                                     <select className='form-control' ref={changing_table => this.changing_table_select = changing_table}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='changing_table_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Do they have a kids menu?</h6>
                                     <select className='form-control' ref={kids_menu => this.kids_menu_select = kids_menu}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='kids_menu_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Do kids eat free?</h6>
                                     <select className='form-control' ref={kids_eat_free => this.kids_eat_free_select = kids_eat_free}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='kids_eat_free_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Do they have highchairs?</h6>
                                     <select className='form-control' ref={highchair => this.highchair_select = highchair}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='highchair_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Is this place stroller friendly?</h6>
                                     <select className='form-control' ref={stroller_at_table => this.stroller_at_table_select = stroller_at_table}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='stroller_at_table_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Is there plenty of parking available?</h6>
                                     <select className='form-control' ref={parking => this.parking_select = parking}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='parking_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Is there a drive-thru?</h6>
                                     <select className='form-control' ref={drive_thru => this.drive_thru_select = drive_thru}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='drive_thru_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Is there at least one restroom?</h6>
                                     <select className='form-control' ref={restroom => this.restroom_select = restroom}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='restroom_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Is there a private lactation room?</h6>
                                     <select className='form-control' ref={mothers_room => this.mothers_room_select = mothers_room}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='mothers_room_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Is there child care offered here at any time?</h6>
                                     <select className='form-control' ref={child_care => this.child_care_select = child_care}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='child_care_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Is this place off limits to children?</h6>
                                     <select className='form-control' ref={adults_only => this.adults_only_select = adults_only}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='adults_only_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Is it good for date night without the kids?</h6>
                                     <select className='form-control' ref={fun_for_grownups => this.fun_for_grownups_select = fun_for_grownups}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='fun_for_grownups_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Is there a good place for children to play?</h6>
                                     <select className='form-control' ref={play_great => this.play_great_select = play_great}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='play_great_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Is this an indoor place for children to play?</h6>
                                     <select className='form-control' ref={indoor_play => this.indoor_play_select = indoor_play}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='indoor_play_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                                 <div className="form-group">
                                     <h6>Is there a splash pad, pool, or beach here?</h6>
                                     <select className='form-control' ref={water_play => this.water_play_select = water_play}>
-                                        <option value='yes'>yes</option>
                                         <option value='no'>no</option>
+                                        <option value='yes'>yes</option>
                                     </select>
                                     <textarea ref='water_play_description' rows="1" className="form-control mt-1"  placeholder="Add an optional note..."/>
                                 </div>
                             </fieldset>
                         </div>
+                        <Tab>Photos</Tab>
                     </TabPanel>
                     <TabPanel>
                         <section className="photos">
                             <div>
                                 <h3>Photos</h3>
                             </div>
-                            <div className='aaaaaa'>
 
-                                {this.renderFileUploadButton() }
-                                   { this.state.images.map(image => ( 
-                                       <div className='upload-images'>
-                                            <img className='image' src={ image.image } key={ image.id } alt="" />
-                                            <input type='hidden' ref='images' value={ image.image } />
-                                       </div>
-                                   )).reverse() }
+                            <div className='place__images'>
+                                <ul>
+                                    {this.renderFileUploadButton() }
+                                       { this.state.images.map(image => ( 
+                                           <li>
+                                                <img className='img-fluid' src={ image.image } key={ image.id } alt="" />
+                                                <input type='hidden' ref='images' value={ image.image } />
+                                           </li>
+                                       )).reverse() }
+                                </ul>
+                            </div> 
 
-
+                            <div className='featured-photo store__images'>
 
                             </div>
-
 
                         </section>
                     </TabPanel>
@@ -555,7 +923,7 @@ class AddPlace extends Component {
                                 </div>
                                 <div className="form-group">
                                     <label>Zip Code</label>
-                                    <input ref='zipcode' type="text" className="form-control" />
+                                    <input ref='zipcode' type="text" className="form-control" placeholder="12345"/>
                                 </div>
                             </div>
                         </div>

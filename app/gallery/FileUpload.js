@@ -22,13 +22,13 @@ export default class FileUpload extends React.Component {
 
     render() {
         return(
-            <div className='uploadImage'>
+            <li className='place__images--selector'>
                 <label htmlFor="file-input">
-                    <img className='addImage' src={ addImage } alt=""/>
-                </label>
-                <input id="file-input" type="file" onChange={ this.props.onUpload } onClick={(event)=> { event.target.value = null }}/>
+                <input id="file-input" multiple type="file" onChange={ this.props.onUpload } onClick={(event)=> { event.target.value = null }}/>
                 { this.renderProgressBar() }
-            </div>
+                    <span>+</span>
+                </label>
+            </li>
         );
     }
 }
