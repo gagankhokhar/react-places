@@ -7,17 +7,6 @@
 	.family-amenities{
 		display: none;
 	}
-	fieldset{
-		.form-group{
-			margin-bottom: 20px;
-		}
-		.form-group{
-			textarea{
-				height: calc(2.25rem + 2px);
-				padding: .4rem .9rem !important;
-			}
-		}
-	}
 	&__location{
 
 		
@@ -27,12 +16,5 @@
 	}
 	section.photos{
 		position: relative;
-	}
-	
-	.featured-photo{
-
-	}
-	.form-control{
-		padding: 6px 14px !important;
 	}
 }

@@ -445,6 +445,31 @@ class EditPlace extends Component {
                 });
             });
         }
+
+
+        if (event && event.target && event.target.files.length) {
+            const that = this;
+            for (let i = 0; i < event.target.files.length; i = i + 1 ) {
+                ( (item) => {
+                    //Get the file from the event.
+                    var file = null;
+                    //Receive the reference.
+                    const storageRef = firebaseRef.storage().ref(`/place/${item.name}`);
+                    //Task to upload the file to Firebase.
+                    const task = storageRef.put(item);
+                    //Firebase utility to receive the file status.
+                    task.on('child_added', snapshot => {
+                        file = snapshot.val();
+                        snapshot.ref.remove();
+                        this.setState({
+                            openImage: null,
+                            images: this.state.images.filter(image => image.id !== file.id)
+                        });
+                    }); 
+                }) (event.target.files[i]);
+            }   
+        }
+
     }
 
     openModalImage() {

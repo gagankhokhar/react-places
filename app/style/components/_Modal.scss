@@ -18,3 +18,21 @@
     }
   }
 }
+
+
+.ReactModal__Overlay{
+    .imageZoom{
+        width: 100%;
+    }
+    .closeButton{
+        width: 30px;
+        position: absolute;
+        transform: rotate(45deg);
+    }
+    .removeButton{
+        width: 40px;
+        position: absolute;
+        top: 60px;
+        right: -14px;
+    }
+}

@@ -340,6 +340,7 @@ class ShowPlace extends Component {
                 <div className="place__title">
                     <h4>{name}</h4>
                     <div className='meta'>{city}, {location}, {zipcode}</div>
+                    <div><span className='colored-gray'>Category</span>:<span className='btn btn-link'>{category}</span></div>
                 </div>
                 <div className="place__description mt-3">
                     { show_description  ? (
@@ -567,6 +568,7 @@ class ShowPlace extends Component {
                 <div ref='map' className='place__sidebar__item map-show-place'>
                     <p>Map will be here</p>
                 </div>
+
                 <div className='place__sidebar__item'>
                     <h5 className='place__sidebar__item--title'>Address</h5>
                     <div>
@@ -579,7 +581,7 @@ class ShowPlace extends Component {
 
                 <div className='place__sidebar__item'>
                     <h5 className='place__sidebar__item--title'>Website</h5>
-                    <link to={`${website2}`}>{website}</link>
+                    <p><a href={ website } target="_blank">{website}</a></p>
                 </div>
 
 
@@ -587,7 +589,7 @@ class ShowPlace extends Component {
                 { show_phone  ? (
                 <div className='place__sidebar__item'>
                     <h5 className='place__sidebar__item--title'>Phone</h5>
-                    <p><a href='{phone}'>{phone}</a></p>
+                    <p><a href="tel:{ phone }">{phone}</a></p>
                 </div>
                 ) : ('')
                 }
@@ -595,7 +597,7 @@ class ShowPlace extends Component {
                 { show_placeEmail  ? (
                 <div className='place__sidebar__item'>
                     <h5 className='place__sidebar__item--title'>Email</h5>
-                    <p><a href='mailto:{placeEmail}'>{placeEmail}</a></p>
+                    <p><a href={ placeEmail }>{placeEmail}</a></p>
                 </div>
                 ) : ('')
                 }

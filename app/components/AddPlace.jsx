@@ -6,151 +6,193 @@ import * as API from 'API'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import 'react-tabs/style/react-tabs.scss'
 import {firebaseRef} from '../firebase/index'
-import FileUpload from '../gallery/FileUpload';
-// import ImageUploader from './ImageUploader/index'
+import FileUpload from '../gallery/FileUpload'
 import TimePicker from 'rc-time-picker'
 import 'rc-time-picker/assets/index.css'
-// import ImageGallery from '../gallery/FileUploadFeatured';
 import Modal from 'react-modal'
+
+import 'medium-draft/lib/index.css';
+// import {EditorState, Editor, convertToRaw, convertFromRaw, RichUtils} from 'draft-js';
 
 class AddPlace extends Component {
 
-  constructor (props) {
-    super(props)
-    this.state = {
-      cities: [],
-      hidden: true,
-      tabIndex: 0,
-      uploadValue: 0,
-      images: [],
-      show_week_day_1_full: true,
-      show_week_day_1_time: false,
-      show_week_day_1_closed: false,
-      show_week_day_2_full: true,
-      show_week_day_2_time: false,
-      show_week_day_2_closed: false,
-      show_week_day_3_full: true,
-      show_week_day_3_time: false,
-      show_week_day_3_closed: false,
-      show_week_day_4_full: true,
-      show_week_day_4_time: false,
-      show_week_day_4_closed: false,
-      show_week_day_5_full: true,
-      show_week_day_5_time: false,
-      show_week_day_5_closed: false,
-      show_week_day_6_full: true,
-      show_week_day_6_time: false,
-      show_week_day_6_closed: false,
-      show_week_day_7_full: true,
-      show_week_day_7_time: false,
-      show_week_day_7_closed: false
-
-    };
-    console.log('imageuploader');
-    console.log(this.props.images);
-
-    this.handleChange_1 = this.handleChange_1.bind(this);
-    this.handleChange_2 = this.handleChange_2.bind(this);
-    this.handleChange_3 = this.handleChange_3.bind(this);
-    this.handleChange_4 = this.handleChange_4.bind(this);
-    this.handleChange_5 = this.handleChange_5.bind(this);
-    this.handleChange_6 = this.handleChange_6.bind(this);
-    this.handleChange_7 = this.handleChange_7.bind(this);
-this.openModalImage = this.openModalImage.bind(this);
-    this.handleUpload = this.handleUpload.bind(this);
-  }
-
-  handleChange_time(event) {
-      let value = event.target.value;
-  }
-
-  handleChange_1(event) {
-      let value = event.target.value;
-      
-      this.setState({
-          show_week_day_1_full: value == '1',
-          show_week_day_1_time: value == '2',
-          show_week_day_1_closed: value == '3'
-      });
-  }
-  handleChange_2(event) {
-   
-      let value = event.target.value;
-      this.setState({
-          show_week_day_2_full: value == '1',
-          show_week_day_2_time: value == '2',
-          show_week_day_2_closed: value == '3'
-      }); 
-  }
-  handleChange_3(event) {
-   
-      let value = event.target.value;
-      this.setState({
-          show_week_day_3_full: value == '1',
-          show_week_day_3_time: value == '2',
-          show_week_day_3_closed: value == '3'
-      }); 
-  }
-  handleChange_4(event) {
-   
-      let value = event.target.value;
-      this.setState({
-          show_week_day_4_full: value == '1',
-          show_week_day_4_time: value == '2',
-          show_week_day_4_closed: value == '3'
-      }); 
-  }
-  handleChange_5(event) {
-   
-      let value = event.target.value;
-      this.setState({
-          show_week_day_5_full: value == '1',
-          show_week_day_5_time: value == '2',
-          show_week_day_5_closed: value == '3'
-      }); 
-  }
-  handleChange_6(event) {
-   
-      let value = event.target.value;
-      this.setState({
-          show_week_day_6_full: value == '1',
-          show_week_day_6_time: value == '2',
-          show_week_day_6_closed: value == '3'
-      }); 
-  }
-  handleChange_7(event) {
-   
-      let value = event.target.value;
-      this.setState({
-          show_week_day_7_full: value == '1',
-          show_week_day_7_time: value == '2',
-          show_week_day_7_closed: value == '3'
-      }); 
-  }
-
-  check () {
-    let hasError = false;
-      const refsKeys = Object.keys(this.refs);
-        refsKeys.forEach((key) => {
+    constructor (props) {
+        super(props)
+        this.state = {
+            cities: [],
+            hidden: true,
+            tabIndex: 0,
+            uploadValue: 0,
+            images: [],
+            show_week_day_1_full: true,
+            show_week_day_1_time: false,
+            show_week_day_1_closed: false,
+            show_week_day_2_full: true,
+            show_week_day_2_time: false,
+            show_week_day_2_closed: false,
+            show_week_day_3_full: true,
+            show_week_day_3_time: false,
+            show_week_day_3_closed: false,
+            show_week_day_4_full: true,
+            show_week_day_4_time: false,
+            show_week_day_4_closed: false,
+            show_week_day_5_full: true,
+            show_week_day_5_time: false,
+            show_week_day_5_closed: false,
+            show_week_day_6_full: true,
+            show_week_day_6_time: false,
+            show_week_day_6_closed: false,
+            show_week_day_7_full: true,
+            show_week_day_7_time: false,
+            show_week_day_7_closed: false
+        };
         
-        if (!this.refs[key].value && key !== 'form' && key !== 'category') {
-            const node = document.createElement('LABEL');
-            node.classList.add('warning-lable');
-            const textNode = document.createTextNode('This field can\'t be empty!');
-            node.appendChild(textNode);
-          this.refs[key].parentElement.appendChild(node);
-          hasError = true;
-        }
-         
-      });
-        if (hasError) {
-            this.setState({openImage: true})
-        }
+        console.log('imageuploader');
+        console.log(this.props.images);
+
+        this.handleChange_1 = this.handleChange_1.bind(this);
+        this.handleChange_2 = this.handleChange_2.bind(this);
+        this.handleChange_3 = this.handleChange_3.bind(this);
+        this.handleChange_4 = this.handleChange_4.bind(this);
+        this.handleChange_5 = this.handleChange_5.bind(this);
+        this.handleChange_6 = this.handleChange_6.bind(this);
+        this.handleChange_7 = this.handleChange_7.bind(this);
+        this.openModalImage = this.openModalImage.bind(this);
+        this.handleUpload = this.handleUpload.bind(this);
+        
+        // this.handleKeyCommand = this.handleKeyCommand.bind(this);
     }
+
+
+    // onChange = (editorState) => {
+    //     this.setState({
+    //         editorState,
+    //     });
+    //     const contentState = editorState.getCurrentContent()
+    //     this.saveContent(contentState)
+    // }
+
+    // saveContent = (content) => {
+    //     firebaseRef.database().ref('place/')
+    //         .update({editorState: JSON.stringify(convertToRaw(content))})
+    // }
+    // handleKeyCommand(command, editorState) {
+    //     const newState = RichUtils.handleKeyCommand(editorState, command);
+    //     if (newState) {
+    //         this.onChange(newState);
+    //         return;
+    //     }
+    //     return;
+    // }
+    // componentDidMount() {
+    //     firebaseRef.database().ref('/place/').once('value').then((snapshot) => {
+    //         const prevVal = snapshot.val().editorState;
+    //         if(prevVal){
+    //             this.setState({editorState:EditorState.createWithContent(convertFromRaw(JSON.parse(prevVal)))}) ;
+    //             this.setState({loading: false});
+    //         }else{
+    //             this.setState({editorState:EditorState.createEmpty()}) ;
+    //             this.setState({loading: false});
+    //         }
+    //     });
+    // }
+
+
+    handleChange_1(event) {
+        let value = event.target.value;
+        this.setState({
+            show_week_day_1_full: value == '1',
+            show_week_day_1_time: value == '2',
+            show_week_day_1_closed: value == '3'
+        });
+    }
+    handleChange_2(event) {
+        let value = event.target.value;
+        this.setState({
+            show_week_day_2_full: value == '1',
+            show_week_day_2_time: value == '2',
+            show_week_day_2_closed: value == '3'
+        }); 
+    }
+    handleChange_3(event) {
+        let value = event.target.value;
+        this.setState({
+            show_week_day_3_full: value == '1',
+            show_week_day_3_time: value == '2',
+            show_week_day_3_closed: value == '3'
+        }); 
+    }
+    handleChange_4(event) {
+        let value = event.target.value;
+        this.setState({
+            show_week_day_4_full: value == '1',
+            show_week_day_4_time: value == '2',
+            show_week_day_4_closed: value == '3'
+        }); 
+    }
+    handleChange_5(event) {
+        let value = event.target.value;
+        this.setState({
+            show_week_day_5_full: value == '1',
+            show_week_day_5_time: value == '2',
+            show_week_day_5_closed: value == '3'
+        }); 
+    }
+    handleChange_6(event) {
+        let value = event.target.value;
+        this.setState({
+            show_week_day_6_full: value == '1',
+            show_week_day_6_time: value == '2',
+            show_week_day_6_closed: value == '3'
+        }); 
+    }
+    handleChange_7(event) {
+        let value = event.target.value;
+        this.setState({
+            show_week_day_7_full: value == '1',
+            show_week_day_7_time: value == '2',
+            show_week_day_7_closed: value == '3'
+        }); 
+    }
+
+    // check () {
+    //     const refsKeys = Object.keys(this.refs);
+    //       refsKeys.forEach((key) => {
+    //       const node = document.createElement('LABEL');
+    //       node.classList.add('warning-lable');
+    //       const textNode = document.createTextNode('This field can\'t be empty!');
+    //       node.appendChild(textNode);
+           
+    //       if (!this.refs[key].value && key !== 'form' && key !== 'category' && key !== 'description') {
+    //         this.refs[key].parentElement.appendChild(node);
+    //       }
+           
+    //     });
+    //   }
+
+    check () {
+      let hasError = false;
+        const refsKeys = Object.keys(this.refs);
+          refsKeys.forEach((key) => {
+          const node = document.createElement('LABEL');
+          node.classList.add('warning-lable');
+          const textNode = document.createTextNode('This field can\'t be empty!');
+          node.appendChild(textNode);
+          if (!this.refs[key].value && key !== 'form' && key !== 'category') {
+              
+            this.refs[key].parentElement.appendChild(node);
+            hasError = true;
+          }
+           
+        });
+          if (hasError) {
+              this.setState({openModalImage: true})
+          }
+      }
 
     openModalImage() {
         return (
-            <Modal contentLabel="Image Modal">
+            <Modal contentLabel="Error Modal">
             Hello
           </Modal>
         );
@@ -187,6 +229,7 @@ this.openModalImage = this.openModalImage.bind(this);
     const placeEmail = this.refs.placeEmail.value;
     const website = this.refs.website.value;
     const phone = this.refs.phone.value;
+    // const description = this.refs.description.focus();
     const description = this.refs.description.value;
     const parentnotes = this.refs.parentnotes.value;
     const features = this.refs.features.value;
@@ -457,6 +500,9 @@ this.openModalImage = this.openModalImage.bind(this);
         }
     }
 
+    // componentDidMount() {
+    //     this.refs.description.focus();
+    // }
 
 
     render () {
@@ -499,11 +545,12 @@ this.openModalImage = this.openModalImage.bind(this);
             )
         }
     }
+    const { editorState } = this.state;
     
     return (
       <div className='NewPlace'>
         <h3 className='action-title'>Add new Store</h3>
-{ this.openModalImage() }
+        { this.openModalImage() }
             <form ref='form' onSubmit={this.addNewPlace.bind(this)}>
 
                 <Tabs forceRenderTabPanel defaultIndex={0}>
@@ -532,6 +579,15 @@ this.openModalImage = this.openModalImage.bind(this);
                                 <div className="form-group">
                                     <label>Description</label>
                                     <textarea ref='description' rows="5" className="form-control"  placeholder="Please describe this place in a factual and neutral tone."/>
+                                    {/* 
+                                      <Editor 
+                                          ref="description" 
+                                          editorState={this.state.editorState}
+                                          onChange={this.onChange} 
+                                          handleKeyCommand={this.handleKeyCommand}
+                                          placeholder="Please describe this place in a factual and neutral tone."
+                                      />
+                                    */} 
                                 </div>
                                 <div className="form-group">
                                     <label>Information for Parents</label>
@@ -883,7 +939,6 @@ this.openModalImage = this.openModalImage.bind(this);
                                 </div>
                             </fieldset>
                         </div>
-                        <Tab>Photos</Tab>
                     </TabPanel>
                     <TabPanel>
                         <section className="photos">
